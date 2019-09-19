@@ -1,2 +1,9 @@
-DatabaseProject/HomeController.class
+DatabaseProject/Models/BookModel.class
 DatabaseProject/Application.class
+DatabaseProject/Repositories/BookRepository.class
+DatabaseProject/RestExceptionHandler.class
+DatabaseProject/Controllers/BookController.class
+DatabaseProject/Controllers/HomeController.class
+DatabaseProject/Exceptions/BookNotFoundException.class
+DatabaseProject/Exceptions/BookIdMismatchException.class
+DatabaseProject/SecurityConfig.class
