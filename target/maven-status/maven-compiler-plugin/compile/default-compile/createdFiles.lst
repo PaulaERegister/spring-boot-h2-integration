@@ -1,4 +1,2 @@
-DatabaseProject\Home.class
-DatabaseProject\HomeController.class
-DatabaseProject\Application.class
-DatabaseProject\DatabaseProjectApplication.class
+DatabaseProject/HomeController.class
+DatabaseProject/Application.class
