@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/books")
+@RequestMapping("/api/book")
 public class BookController {
     @Autowired
     private BookRepository bookRepository;
@@ -34,7 +34,7 @@ public class BookController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BookModel create(@RequestBody BookModel book){
+    public BookModel create(@ModelAttribute BookModel book){
         return bookRepository.save(book);
     }
 
