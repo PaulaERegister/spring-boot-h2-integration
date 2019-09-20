@@ -20,12 +20,11 @@ public class FormController {
 
     @GetMapping("/form")
     public String formPage(Model model) {
-        System.err.println("get page");
         model.addAttribute("book", new BookModel());
+        model.addAttribute("bookCount", bookRepository.count());
         model.addAttribute("books", bookRepository.findAll());
         return "form";
     }
-
 
     @GetMapping("/getBooks")
     public Iterable findAll(){
@@ -63,6 +62,12 @@ public class FormController {
         bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
         bookRepository.deleteById(id);
         return "form";
+    }
+
+    @GetMapping("/update/{id}")
+    public String handleUpdate(@PathVariable Long id, Model model) {
+        System.err.println("Updating");
+        return "redirect:/form";
     }
 
     @PutMapping("/{id}")
