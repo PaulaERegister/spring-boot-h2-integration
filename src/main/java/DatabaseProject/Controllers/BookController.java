@@ -16,6 +16,10 @@ public class BookController {
     @Autowired
     private BookRepository bookRepository;
 
+    public BookRepository getBookRepository() {
+        return bookRepository;
+    }
+
     @GetMapping
     public Iterable findAll(){
         return bookRepository.findAll();

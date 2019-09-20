@@ -20,6 +20,8 @@ public class FormController {
 
     @GetMapping("/form")
     public String formPage(Model model) {
+        System.out.println(model);
+        System.err.println("Hi");
         model.addAttribute("book", new BookModel());
         model.addAttribute("books", bookRepository.findAll());
         return "form";
@@ -44,9 +46,11 @@ public class FormController {
 
     @PostMapping("/form")
     @ResponseStatus(HttpStatus.CREATED)
-    public String create(@ModelAttribute BookModel book){
+    public String create(@ModelAttribute BookModel book, Model model){
         bookRepository.save(book);
-        return "home";
+        model.addAttribute("book", new BookModel());
+        model.addAttribute("books", bookRepository.findAll());
+        return "form";
     }
 
     @DeleteMapping("/{id}")
@@ -54,6 +58,7 @@ public class FormController {
         bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
         bookRepository.deleteById(id);
     }
+
     @PutMapping("/{id}")
     public BookModel updateBook(@RequestBody BookModel book, @PathVariable Long id) {
         if (book.getId() != id) {

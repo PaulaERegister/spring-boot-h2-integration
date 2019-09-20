@@ -35,10 +35,10 @@
 </table>
 </body>
 </html>
-<form action="#" th:action="@{/form}" th:object="${book}" method="post">
+<form action="" th:action="@{/form}" th:object="${book}" method="post">
     <p>Title: <input type="text" th:field="*{title}" /></p>
     <p>Author: <input type="text" th:field="*{author}" /></p>
-    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+    <p><input type="submit" value="Submit" th:action="@{/form}" th:method="get" /> <input type="reset" value="Reset" /></p>
 </form>
 </body>
 </html>
