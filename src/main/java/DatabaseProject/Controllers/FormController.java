@@ -20,8 +20,7 @@ public class FormController {
 
     @GetMapping("/form")
     public String formPage(Model model) {
-        System.out.println(model);
-        System.err.println("Hi");
+        System.err.println("get page");
         model.addAttribute("book", new BookModel());
         model.addAttribute("books", bookRepository.findAll());
         return "form";
@@ -53,10 +52,17 @@ public class FormController {
         return "form";
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    @GetMapping("/delete/{id}")
+    public String handleDelete(@PathVariable Long id) {
+        delete(id);
+        return "redirect:/form";
+    }
+
+    @DeleteMapping("/form/{id}")
+    public String delete(@PathVariable Long id) {
         bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
         bookRepository.deleteById(id);
+        return "form";
     }
 
     @PutMapping("/{id}")
