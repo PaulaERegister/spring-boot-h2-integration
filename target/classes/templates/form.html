@@ -22,9 +22,44 @@
                 });
             });
         });
+
+        function sortTable(f,n){
+            var rows = $('#book-table tbody  tr').get();
+
+            rows.sort(function(a, b) {
+
+                var A = getVal(a);
+                var B = getVal(b);
+
+                if(A < B) {
+                    return -1*f;
+                }
+                if(A > B) {
+                    return 1*f;
+                }
+                return 0;
+            });
+
+            function getVal(elm){
+                var v = $(elm).children('td').eq(n).text().toUpperCase();
+                if($.isNumeric(v)){
+                    v = parseInt(v,10);
+                    console.log(v)
+                }
+                return v;
+            }
+
+            $.each(rows, function(index, row) {
+                $('#book-table').children('tbody').append(row);
+            });
+        }
+        var f_sl = 1;
+        function sort() {
+            f_sl *= -1;
+            var n = $(this).prevAll().length;
+            sortTable(f_sl, n);
+        }
         var url = "/form/";
-        var editModalTarget = url;
-        var tableTarget = "/getBooks";
 
         function showEditModal(index) {
             var editUrl = "/api/book/"+ index;
@@ -236,12 +271,12 @@
         <table th:if="${bookCount != 0}" class="table table-bordered" width="100%" id="book-table" cellspacing="0">
             <thead>
             <tr>
-                <th>ISBN</th>
-                <th>Title</th>
-                <th>Author</th>
+                <th id="isbn-th" onclick="sort()">ISBN</th>
+                <th id="title-th" onclick="sort()">Title</th>
+                <th id="author-th" onclick="sort()">Author</th>
                 <th>Review</th>
-                <th>Pages</th>
-                <th>Rating</th>
+                <th id="pages-th" onclick="sort()">Pages</th>
+                <th id="rating-th" onclick="sort()">Rating</th>
                 <th></th>
             </tr>
             </thead>
