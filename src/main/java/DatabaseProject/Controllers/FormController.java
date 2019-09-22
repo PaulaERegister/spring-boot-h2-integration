@@ -26,11 +26,6 @@ public class FormController {
         return "form";
     }
 
-    @GetMapping("/getBooks")
-    public Iterable findAll(){
-        return bookRepository.findAll();
-    }
-
     @GetMapping("/title/{bookTitle}")
     public List findByTitle(@PathVariable String bookTitle) {
         return bookRepository.findByTitle(bookTitle);
@@ -38,6 +33,7 @@ public class FormController {
 
     @GetMapping("/{id}")
     public BookModel findOne(@PathVariable Long id) {
+        System.err.println(bookRepository.findById(id));
         return bookRepository.findById(id)
                 .orElseThrow(BookNotFoundException::new);
     }
@@ -46,6 +42,7 @@ public class FormController {
     @ResponseStatus(HttpStatus.CREATED)
     public String create(@ModelAttribute BookModel book, Model model){
         bookRepository.save(book);
+        System.err.println(book.getId());
         model.addAttribute("book", new BookModel());
         model.addAttribute("books", bookRepository.findAll());
         return "form";
@@ -53,6 +50,8 @@ public class FormController {
 
     @GetMapping("/delete/{id}")
     public String handleDelete(@PathVariable Long id) {
+        System.err.println(id);
+        System.err.println("delete");
         delete(id);
         return "redirect:/form";
     }
@@ -64,19 +63,14 @@ public class FormController {
         return "form";
     }
 
-    @GetMapping("/update/{id}")
-    public String handleUpdate(@PathVariable Long id, Model model) {
-        System.err.println("Updating");
-        return "redirect:/form";
+    @PutMapping("/update")
+    public String updateBook(@RequestBody BookModel book, Model model) {
+        System.err.println(book.getId());
+        bookRepository.findById(book.getId()).orElseThrow(BookNotFoundException::new);
+        bookRepository.save(book);
+        System.out.println(bookRepository.findById(book.getId()));
+        model.addAttribute("book", new BookModel());
+        model.addAttribute("books", bookRepository.findAll());
+        return "form";
     }
-
-    @PutMapping("/{id}")
-    public BookModel updateBook(@RequestBody BookModel book, @PathVariable Long id) {
-        if (book.getId() != id) {
-            throw new BookIdMismatchException("id mismatch", new Throwable());
-        }
-        bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
-        return bookRepository.save(book);
-    }
-
 }

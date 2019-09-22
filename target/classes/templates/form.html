@@ -4,9 +4,228 @@
     <title>Getting Started: Handling Form Submission</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+
+<!--    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.10/css/jquery.dataTables.css"/>-->
+<!--    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.10/js/jquery.dataTables.js"></script>-->
+    <script>
+        /**
+         * @author Robert Wilk
+         * Created on 1/20/2016.
+         */
+
+// Begin Something modal population and submit functions
+        var url = "/form/";
+        var editModalTarget = url;
+        var tableTarget = "/getBooks";
+
+        // Build the url for the Ajax request for Something.
+        function showEditModal(index) {
+            var editUrl = "/api/book/"+ index;
+            loadEntity(editUrl);
+        }
+
+        // Ajax request for Something to populate the modal form.
+        function loadEntity(url) {
+            $.getJSON(url, {}, function (data) {
+                populateModal(data);
+            });
+        }
+
+        // Assign the data values to the modal form.
+        function populateModal(data) {
+            $('#update-id').val(data.id);
+            $('#update-isbn').val(data.isbn);
+            $('#update-title').val(data.title);
+            $('#update-author').val(data.author);
+            $('#update-review').val(data.review);
+            $('#update-pages').val(data.pages);
+            $('#update-rating').val(data.rating);
+        }
+        function clearModal() {
+            $('#update-id').val('');
+            $('#update-isbn').val('');
+            $('#update-title').val('');
+            $('#update-author').val('');
+            $('#update-review').val('');
+            $('#update-pages').val('');
+            $('#update-rating').val('');
+        }
+        function closeModal(name) {
+            $(name).modal('toggle');
+        }
+
+        function clearAndCloseModal(name) {
+            clearModal();
+            closeModal(name);
+        }
+
+        function getFormData($form){
+            var unindexed_array = $form.serializeArray();
+            var indexed_array = {};
+
+            $.map(unindexed_array, function(n, i){
+                if (n['name'] !== "_method") {
+                    indexed_array[n['name']] = n['value'];
+                }
+            });
+            return indexed_array;
+        }
+        // POST the edits to Something to the server.
+        function postEdit() {
+            var z = getFormData($('#edit-form'))
+            console.log(JSON.stringify(z))
+            $.ajax({
+                url: '/update',
+                type: 'PUT',
+                contentType: "application/json",
+                data: JSON.stringify(z),
+                success: function(data) {
+                    //play with data
+                    updateTable(data)
+                },
+                error: function(data) {
+                }
+            });
+            clearAndCloseModal('#umodal');
+        }
+        function deleteEntity(entity) {
+            var input = $('#delete-id');
+            var url = '/delete/' + input.val();
+            $.get(url, input.val(), function (data) {
+                updateTable(data);
+            });
+            closeModal('#dmodal');
+            input.val('');
+        }
+        function showDeleteModal(index) {
+            $('#delete-id').val(index);
+        }
+        function updateTable(data) {
+            $.ajax({
+                dataType: "json",
+                url: "/api/book",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                type: 'GET',
+                success: function (response) {
+                    $('#table-body').empty();
+                    $.each(response, function (i, e) {
+                        console.log(e)
+                        var end = e.id + ");'";
+                        var edit = "'showEditModal(" + end;
+                        var del = "'showDeleteModal(" + end;
+                        var row = $('<tr>').append(
+                            $('<td>').text(e.isbn),
+                            $('<td>').text(e.title),
+                            $('<td>').text(e.author),
+                            $('<td>').text(e.review),
+                            $('<td>').text(e.pages),
+                            $('<td>').text(e.rating),
+                            $('<td>').append(
+                                "<a data-toggle='modal' data-target='#umodal' class='btn btn-outline-primary' onclick=" +
+                                edit + ">Edit</a>"
+                            ),
+                            $('<td>').append(
+                                "<a class='btn btn-outline-danger' data-toggle='modal' data-target='#dmodal' onclick=" + del + ">Delete</a>"
+                            )
+                        );
+                        $('#book-table').append(row);
+                    });
+                }
+            });
+        }
+
+        $(document).ready(function ($) {
+            $("#edit-form").submit(function (event) {
+                event.preventDefault();
+                postEdit();
+            });
+        });
+    </script>
 </head>
 <body>
+<div th:id="umodal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Update Something</h4>
+            </div>
+            <div class="modal-body">
+                <form id="edit-form" role="form" th:method="put" th:action="@{/update}"
+                      th:object="${book}">
+                    <input id="update-id" type="hidden" th:field="*{id}" th:value="${book.id}"/>
+                    <fieldset class="form-group">
+                        <label for="update-isbn">isbn</label>
+                        <input th:field="*{isbn}" th:value="${book.isbn}" class="form-control"
+                               id="update-isbn"
+                               type="number"
+                               placeholder="isbn"/>
+                        <input th:field="*{title}" th:value="${book.title}" class="form-control"
+                               id="update-title"
+                               type="text"
+                               placeholder="title"/>
+                        <input th:field="*{author}" th:value="${book.author}" class="form-control"
+                               id="update-author"
+                               type="text"
+                               placeholder="author"/>
+                        <input th:field="*{pages}" th:value="${book.pages}" class="form-control"
+                               id="update-pages"
+                               type="number"
+                               placeholder="pages"/>
+                        <input th:field="*{rating}" th:value="${book.rating}" class="form-control"
+                               id="update-rating"
+                               type="number"
+                               placeholder="rating"/>
+                        <input th:field="*{review}" th:value="${book.review}" class="form-control"
+                               id="update-review"
+                               type="text"
+                               placeholder="review"/>
+                    </fieldset>
+                    <div class="form-group">
+                        <button class="btn btn-success" type="submit">Save</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div th:id="dmodal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Delete Something</h4>
+            </div>
+            <div class="modal-body">
+                <input id="delete-id" type="hidden"/>
+                <div align="center">
+                    <p>Are you sure you want to delete this record?</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+<!--                                    <a class="btn btn-outline-danger" th:href="@{/delete/{id}(id=${book1.id})}">Delete</a>
+-->
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a type="button" class="btn btn-danger" onclick="deleteEntity('book')">Delete</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
     <div class="container-fluid">
         <h1>Books</h1>
         <div class="card bg-light col-md-12" th:if="${bookCount == 0}">
@@ -15,7 +234,7 @@
             </div>
         </div>
         <br>
-        <table th:if="${bookCount != 0}" class="table table-bordered" width="100%" id="dataTable" cellspacing="0">
+        <table th:if="${bookCount != 0}" class="table table-bordered" width="100%" id="book-table" cellspacing="0">
             <thead>
             <tr>
                 <th>ISBN</th>
@@ -27,17 +246,18 @@
                 <th></th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="table-body">
             <tr th:each="book1 : ${books}">
-                <td th:text="${book1.ISBN}"></td>
+                <td th:text="${book1.isbn}"></td>
                 <td th:text="${book1.title}"></td>
                 <td th:text="${book1.author}"></td>
                 <td th:text="${book1.review}"></td>
                 <td th:text="${book1.pages}"></td>
                 <td th:text="${book1.rating}"></td>
                 <td>
-                    <a class="btn btn-outline-primary" th:href="@{/update/{id}(id=${book1.id})}">Update</a>
-                    <a class="btn btn-outline-danger" th:href="@{/delete/{id}(id=${book1.id})}">Delete</a>
+                    <a data-toggle="modal" data-target="#umodal" class="btn btn-outline-primary"
+                       th:onclick="'showEditModal(' + ${book1.id} + ')'">Edit</a>
+                    <a data-toggle="modal" class="btn btn-outline-danger" data-target='#dmodal' th:onclick="'showDeleteModal(' + ${book1.id} + ')'">Delete</a>
                 </td>
             </tr>
             </tbody>
@@ -47,7 +267,7 @@
                 <form action="" th:action="@{/form}" th:object="${book}" method="post">
                     <div class="form-group col-md-8">
                         <label for="isbn">ISBN</label>
-                        <input class="form-control" type="text" th:field="*{ISBN}" id="isbn" />
+                        <input class="form-control" type="text" th:field="*{isbn}" id="isbn" />
                     </div>
                     <div class="form-group col-md-8">
                         <label for="title">Title</label>
@@ -77,7 +297,6 @@
             </div>
         </div>
     </div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>

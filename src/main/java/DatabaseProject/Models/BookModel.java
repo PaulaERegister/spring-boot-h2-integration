@@ -9,7 +9,7 @@ public class BookModel {
     private long id;
 
     @Column(nullable = false, unique = true)
-    private int ISBN;
+    private int isbn;
 
     @Column(nullable = false)
     private String title;
@@ -50,12 +50,12 @@ public class BookModel {
         this.title = title;
     }
 
-    public int getISBN() {
-        return ISBN;
+    public int getIsbn() {
+        return isbn;
     }
 
-    public void setISBN(int ISBN) {
-        this.ISBN = ISBN;
+    public void setIsbn(int isbn) {
+        this.isbn = isbn;
     }
 
     public float getRating() {
