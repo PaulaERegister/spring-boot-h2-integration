@@ -1,6 +1,7 @@
 package DatabaseProject.Models;
 
 import javax.persistence.*;
+import java.awt.print.Book;
 
 @Entity
 public class BookModel {
@@ -25,6 +26,21 @@ public class BookModel {
 
     @Column
     private float rating;
+
+    public BookModel(int isbn, String title, String author, String review, int pages, float rating) {
+        this.title = title;
+        this.author = author;
+        this.review = review;
+        this.pages = pages;
+        this.isbn = isbn;
+        this.rating = rating;
+    }
+    public BookModel(String[] data) {
+        this(Integer.parseInt(data[0]), data[1], data[2], data[3], Integer.parseInt(data[4]), Float.parseFloat(data[5]));
+    }
+    public BookModel(){
+
+    }
 
     public long getId() {
         return id;

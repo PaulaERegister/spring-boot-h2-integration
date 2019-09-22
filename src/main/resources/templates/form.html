@@ -14,17 +14,18 @@
 <!--    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.10/css/jquery.dataTables.css"/>-->
 <!--    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.10/js/jquery.dataTables.js"></script>-->
     <script>
-        /**
-         * @author Robert Wilk
-         * Created on 1/20/2016.
-         */
-
-// Begin Something modal population and submit functions
+        $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#table-body tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
         var url = "/form/";
         var editModalTarget = url;
         var tableTarget = "/getBooks";
 
-        // Build the url for the Ajax request for Something.
         function showEditModal(index) {
             var editUrl = "/api/book/"+ index;
             loadEntity(editUrl);
@@ -78,8 +79,7 @@
         }
         // POST the edits to Something to the server.
         function postEdit() {
-            var z = getFormData($('#edit-form'))
-            console.log(JSON.stringify(z))
+            var z = getFormData($('#edit-form'));
             $.ajax({
                 url: '/update',
                 type: 'PUT',
@@ -118,7 +118,6 @@
                 success: function (response) {
                     $('#table-body').empty();
                     $.each(response, function (i, e) {
-                        console.log(e)
                         var end = e.id + ");'";
                         var edit = "'showEditModal(" + end;
                         var del = "'showDeleteModal(" + end;
@@ -131,9 +130,7 @@
                             $('<td>').text(e.rating),
                             $('<td>').append(
                                 "<a data-toggle='modal' data-target='#umodal' class='btn btn-outline-primary' onclick=" +
-                                edit + ">Edit</a>"
-                            ),
-                            $('<td>').append(
+                                edit + ">Edit</a>" ).append(
                                 "<a class='btn btn-outline-danger' data-toggle='modal' data-target='#dmodal' onclick=" + del + ">Delete</a>"
                             )
                         );
@@ -226,6 +223,7 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
     <div class="container-fluid">
         <h1>Books</h1>
         <div class="card bg-light col-md-12" th:if="${bookCount == 0}">
@@ -234,6 +232,7 @@
             </div>
         </div>
         <br>
+        <input id="myInput" type="text" placeholder="Search..">
         <table th:if="${bookCount != 0}" class="table table-bordered" width="100%" id="book-table" cellspacing="0">
             <thead>
             <tr>
