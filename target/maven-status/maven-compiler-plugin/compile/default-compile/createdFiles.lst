@@ -1,5 +1,7 @@
+DatabaseProject/Repositories/PlantRepository.class
 DatabaseProject/Models/BookModel.class
 DatabaseProject/Application.class
+DatabaseProject/Models/PlantModel.class
 DatabaseProject/Services/BookService.class
 DatabaseProject/Repositories/BookRepository.class
 DatabaseProject/RestExceptionHandler.class
@@ -8,3 +10,5 @@ DatabaseProject/Controllers/HomeController.class
 DatabaseProject/Exceptions/BookNotFoundException.class
 DatabaseProject/Exceptions/BookIdMismatchException.class
 DatabaseProject/SecurityConfig.class
+DatabaseProject/Controllers/PlantController.class
+DatabaseProject/WebConfig.class

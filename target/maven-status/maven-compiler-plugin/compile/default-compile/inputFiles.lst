@@ -8,3 +8,4 @@
 /Users/pregister/projects/spring-boot-h2-integration/src/main/java/DatabaseProject/Services/BookService.java
 /Users/pregister/projects/spring-boot-h2-integration/src/main/java/DatabaseProject/RestExceptionHandler.java
 /Users/pregister/projects/spring-boot-h2-integration/src/main/java/DatabaseProject/Exceptions/BookNotFoundException.java
+/Users/pregister/projects/spring-boot-h2-integration/src/main/java/DatabaseProject/WebConfig.java

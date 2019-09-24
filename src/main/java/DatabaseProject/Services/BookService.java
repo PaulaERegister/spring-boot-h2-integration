@@ -12,6 +12,7 @@ import java.util.List;
 
 @RequestMapping("/book")
 public class BookService {
+    @Autowired
     private BookRepository bookRepository;
 
     public BookService(BookRepository bookRepository){

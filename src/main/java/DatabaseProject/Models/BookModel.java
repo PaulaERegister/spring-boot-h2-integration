@@ -1,7 +1,6 @@
 package DatabaseProject.Models;
 
 import javax.persistence.*;
-import java.awt.print.Book;
 
 @Entity
 public class BookModel {

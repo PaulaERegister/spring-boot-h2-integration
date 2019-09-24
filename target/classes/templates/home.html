@@ -5,14 +5,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
-    <script
-            src="https://code.jquery.com/jquery-3.4.1.min.js"
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
             crossorigin="anonymous"></script>
+    <script type="text/javascript" th:src="@{/js/formlogic.js}" ></script>
     <!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
-
-    <!--    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.10/css/jquery.dataTables.css"/>-->
-    <!--    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.10/js/jquery.dataTables.js"></script>-->
     <script>
         $(document).ready(function(){
             $("#myInput").on("keyup", function() {
@@ -110,7 +107,6 @@
             });
             return indexed_array;
         }
-        // POST the edits to Something to the server.
         function postEdit() {
             var z = getFormData($('#edit-form'));
             $.ajax({
@@ -119,7 +115,6 @@
                 contentType: "application/json",
                 data: JSON.stringify(z),
                 success: function(data) {
-                    //play with data
                     updateTable(data)
                 },
                 error: function(data) {
@@ -248,8 +243,6 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <!--                                    <a class="btn btn-outline-danger" th:href="@{/delete/{id}(id=${book1.id})}">Delete</a>
-                -->
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <a type="button" class="btn btn-danger" onclick="deleteEntity('book')">Delete</a>
             </div>
