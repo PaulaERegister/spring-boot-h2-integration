@@ -1,6 +1,5 @@
 package DatabaseProject.Controllers;
 
-import DatabaseProject.Exceptions.BookIdMismatchException;
 import DatabaseProject.Exceptions.BookNotFoundException;
 import DatabaseProject.Models.BookModel;
 import DatabaseProject.Repositories.BookRepository;
@@ -9,12 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Controller
@@ -29,35 +22,7 @@ public class FormController {
         model.addAttribute("books", bookRepository.findAll());
         return "form";
     }
-//    private void loadFromCSV(String filename) {
-//        ArrayList<BookModel> books = new ArrayList<BookModel>();
-//        try {
-//            BufferedReader br = new BufferedReader(new FileReader(filename));
-//            String line;
-//            while((line = br.readLine()) != null) {
-//                String[] split = line.split(",");
-//                books.add(new BookModel(split));
-//            }
-//            br.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        for (int i = 0; i < books.size(); i++) {
-//            bookRepository.save(books.get(i));
-//        }
-//    }
 
-    @GetMapping("/title/{bookTitle}")
-    public List findByTitle(@PathVariable String bookTitle) {
-        return bookRepository.findByTitle(bookTitle);
-    }
-
-    @GetMapping("/{id}")
-    public BookModel findOne(@PathVariable Long id) {
-        System.err.println(bookRepository.findById(id));
-        return bookRepository.findById(id)
-                .orElseThrow(BookNotFoundException::new);
-    }
 
     @PostMapping("/form")
     @ResponseStatus(HttpStatus.CREATED)
@@ -71,8 +36,6 @@ public class FormController {
 
     @GetMapping("/delete/{id}")
     public String handleDelete(@PathVariable Long id) {
-        System.err.println(id);
-        System.err.println("delete");
         delete(id);
         return "redirect:/form";
     }
