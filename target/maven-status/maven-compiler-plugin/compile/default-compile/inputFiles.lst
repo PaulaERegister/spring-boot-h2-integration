@@ -1,11 +1,14 @@
 /Users/pregister/projects/spring-boot-h2-integration/src/main/java/DatabaseProject/Repositories/BookRepository.java
 /Users/pregister/projects/spring-boot-h2-integration/src/main/java/DatabaseProject/Models/BookModel.java
+/Users/pregister/projects/spring-boot-h2-integration/src/main/java/DatabaseProject/Controllers/PlantController.java
+/Users/pregister/projects/spring-boot-h2-integration/src/main/java/DatabaseProject/Repositories/PlantRepository.java
+/Users/pregister/projects/spring-boot-h2-integration/src/main/java/DatabaseProject/Application.java
+/Users/pregister/projects/spring-boot-h2-integration/src/main/java/DatabaseProject/Services/BookService.java
 /Users/pregister/projects/spring-boot-h2-integration/src/main/java/DatabaseProject/Controllers/BookController.java
+/Users/pregister/projects/spring-boot-h2-integration/src/main/java/DatabaseProject/Models/PlantModel.java
 /Users/pregister/projects/spring-boot-h2-integration/src/main/java/DatabaseProject/Controllers/HomeController.java
 /Users/pregister/projects/spring-boot-h2-integration/src/main/java/DatabaseProject/SecurityConfig.java
-/Users/pregister/projects/spring-boot-h2-integration/src/main/java/DatabaseProject/Application.java
 /Users/pregister/projects/spring-boot-h2-integration/src/main/java/DatabaseProject/Exceptions/BookIdMismatchException.java
-/Users/pregister/projects/spring-boot-h2-integration/src/main/java/DatabaseProject/Services/BookService.java
 /Users/pregister/projects/spring-boot-h2-integration/src/main/java/DatabaseProject/RestExceptionHandler.java
 /Users/pregister/projects/spring-boot-h2-integration/src/main/java/DatabaseProject/Exceptions/BookNotFoundException.java
 /Users/pregister/projects/spring-boot-h2-integration/src/main/java/DatabaseProject/WebConfig.java

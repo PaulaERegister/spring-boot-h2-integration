@@ -8,8 +8,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
             crossorigin="anonymous"></script>
-    <script type="text/javascript" th:src="@{/js/formlogic.js}" ></script>
-    <!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+<!--    <script type="text/javascript" th:src="@{/js/formlogic.js}" ></script>-->
     <script>
         $(document).ready(function(){
             $("#myInput").on("keyup", function() {
@@ -17,6 +16,11 @@
                 $("#table-body tr").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
+            });
+        });
+        $(document).ready(function() {
+            $('th').click(function() {
+                $('i', this).toggleClass('fa-sort-up fa-sort-down');
             });
         });
 
@@ -49,10 +53,10 @@
                 $('#book-table').children('tbody').append(row);
             });
         }
-        var f_sl = 1;
+        var arr = [1, 1, 1, 1, 1, 1];
         function sort(index) {
-            f_sl *= -1;
-            sortTable(f_sl, index);
+            arr[index] *= -1;
+            sortTable(arr[index], index);
         }
         var url = "/form/";
 
@@ -175,8 +179,38 @@
             });
         });
     </script>
+    <script src="https://kit.fontawesome.com/ac43a548fd.js" crossorigin="anonymous"></script>
+
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
 <div th:id="umodal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -258,16 +292,18 @@
         </div>
     </div>
     <br>
-    <input id="myInput" type="text" placeholder="Search..">
+    <form class="form-inline my-2 my-lg-0">
+        <input id="myInput" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    </form>
     <table th:if="${bookCount != 0}" class="table table-bordered" width="100%" id="book-table" cellspacing="0">
         <thead>
         <tr>
-            <th id="isbn-th" onclick="sort(0)">ISBN</th>
-            <th id="title-th" onclick="sort(1)">Title</th>
-            <th id="author-th" onclick="sort(2)">Author</th>
+            <th style="cursor: pointer;" id="isbn-th" onclick="sort(0);">ISBN <i class="fas fa-sort-up"></i></th>
+            <th style="cursor: pointer;" id="title-th" onclick="sort(1)">Title <i class="fas fa-sort-up"></i></th>
+            <th style="cursor: pointer;" id="author-th" onclick="sort(2)">Author <i class="fas fa-sort-up"></i></th>
             <th>Review</th>
-            <th id="pages-th" onclick="sort(4)">Pages</th>
-            <th id="rating-th" onclick="sort(5)">Rating</th>
+            <th style="cursor: pointer;" id="pages-th" onclick="sort(4)">Pages <i class="fas fa-sort-up"></i></th>
+            <th style="cursor: pointer;" id="rating-th" onclick="sort(5)">Rating <i class="fas fa-sort-up"></i></th>
             <th></th>
         </tr>
         </thead>
