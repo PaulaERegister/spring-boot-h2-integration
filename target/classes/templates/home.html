@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Handling Form Submission</title>
+    <title>Book Review Library</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
@@ -194,9 +194,6 @@
             <li class="nav-item active">
                 <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Dropdown
@@ -215,60 +212,76 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">Update</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Update Something</h4>
             </div>
             <div class="modal-body">
                 <form id="edit-form" role="form" th:method="put" th:action="@{/update}"
                       th:object="${book}">
                     <input id="update-id" type="hidden" th:field="*{id}" th:value="${book.id}"/>
                     <fieldset class="form-group">
-                        <label for="update-isbn">isbn</label>
-                        <input th:field="*{isbn}" th:value="${book.isbn}" class="form-control"
-                               id="update-isbn"
-                               type="number"
-                               placeholder="isbn"/>
-                        <input th:field="*{title}" th:value="${book.title}" class="form-control"
-                               id="update-title"
-                               type="text"
-                               placeholder="title"/>
-                        <input th:field="*{author}" th:value="${book.author}" class="form-control"
-                               id="update-author"
-                               type="text"
-                               placeholder="author"/>
-                        <input th:field="*{pages}" th:value="${book.pages}" class="form-control"
-                               id="update-pages"
-                               type="number"
-                               placeholder="pages"/>
-                        <input th:field="*{rating}" th:value="${book.rating}" class="form-control"
-                               id="update-rating"
-                               type="number"
-                               placeholder="rating"/>
-                        <input th:field="*{review}" th:value="${book.review}" class="form-control"
-                               id="update-review"
-                               type="text"
-                               placeholder="review"/>
+                        <div class="form-group col-md-8">
+                            <label for="update-isbn">ISBN</label>
+                            <input th:field="*{isbn}" th:value="${book.isbn}" class="form-control"
+                                   id="update-isbn"
+                                   type="number"
+                                   placeholder="isbn"/>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="update-title">Title</label>
+                            <input th:field="*{title}" th:value="${book.title}" class="form-control"
+                                   id="update-title"
+                                   type="text"
+                                   placeholder="title"/>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="update-author">Author</label>
+                            <input th:field="*{author}" th:value="${book.author}" class="form-control"
+                                   id="update-author"
+                                   type="text"
+                                   placeholder="author"/>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="update-pages">Pages</label>
+                            <input th:field="*{pages}" th:value="${book.pages}" class="form-control"
+                                   id="update-pages"
+                                   type="number"
+                                   placeholder="pages"/>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="update-rating">Rating</label>
+                            <input th:field="*{rating}" th:value="${book.rating}" class="form-control"
+                                   id="update-rating"
+                                   type="number"
+                                   placeholder="rating"/>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="update-review">Review</label>
+                            <textarea th:field="*{review}" th:value="${book.review}" class="form-control"
+                                   id="update-review"
+                                   placeholder="review"></textarea>
+
+                        </div>
                     </fieldset>
-                    <div class="form-group">
+                    <div class="modal-footer">
                         <button class="btn btn-success" type="submit">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            </div>
+
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <div th:id="dmodal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">Delete</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Delete Something</h4>
             </div>
             <div class="modal-body">
                 <input id="delete-id" type="hidden"/>
@@ -278,7 +291,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <a type="button" class="btn btn-danger" onclick="deleteEntity('book')">Delete</a>
+                <button type="button" class="btn btn-danger" onclick="deleteEntity('book')">Delete</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -328,15 +341,15 @@
             <form action="" th:action="@{/home}" th:object="${book}" method="post">
                 <div class="form-group col-md-8">
                     <label for="isbn">ISBN</label>
-                    <input class="form-control" type="text" th:field="*{isbn}" id="isbn" />
+                    <input class="form-control" type="number" th:field="*{isbn}" id="isbn" />
                 </div>
                 <div class="form-group col-md-8">
                     <label for="title">Title</label>
-                    <input class="form-control" type="text" th:field="*{title}" id="title" />
+                    <input class="form-control" type="text" th:field="*{title}" id="title" required />
                 </div>
                 <div class="form-group col-md-8">
                     <label for="author">Author</label>
-                    <input class="form-control" type="text" th:field="*{author}" id="author" />
+                    <input class="form-control" type="text" th:field="*{author}" id="author" required />
                 </div>
                 <div class="form-group col-md-8">
                     <label for="pages">Pages</label>

@@ -6,8 +6,10 @@ import DatabaseProject.Models.BookModel;
 import DatabaseProject.Repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -20,6 +22,20 @@ public class BookController {
         return bookRepository;
     }
 
+
+//    public BookModel storeFile(){
+//        String filename = StringUtils.cleanPath(file.getOriginalFilename());
+//        try {
+//            if(filename.contains("..")){
+//            }
+//            BookModel book = bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
+//            book.setData(file.getBytes());
+//            bookRepository.save(book);
+//
+//        } catch (IOException e){
+//            e.printStackTrace();
+//        }
+//    }
     @GetMapping
     public Iterable findAll(){
         return bookRepository.findAll();

@@ -8,7 +8,7 @@ public class BookModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private int isbn;
 
     @Column(nullable = false)
@@ -17,25 +17,29 @@ public class BookModel {
     @Column(nullable = false)
     private String author;
 
-    @Column
+    @Column(length=100000)
     private String review;
 
     @Column(nullable = false)
     private int pages;
 
-    @Column
+    @Column(length= 5, precision = 2)
     private float rating;
 
-    public BookModel(int isbn, String title, String author, String review, int pages, float rating) {
+    @Lob
+    private byte[] data;
+
+    public BookModel(int isbn, String title, String author, String review, int pages, float rating, byte[] data) {
         this.title = title;
         this.author = author;
         this.review = review;
         this.pages = pages;
         this.isbn = isbn;
         this.rating = rating;
+        this.data = data;
     }
     public BookModel(String[] data) {
-        this(Integer.parseInt(data[0]), data[1], data[2], data[3], Integer.parseInt(data[4]), Float.parseFloat(data[5]));
+        this(Integer.parseInt(data[0]), data[1], data[2], data[3], Integer.parseInt(data[4]), Float.parseFloat(data[5]), null);
     }
     public BookModel(){
 
@@ -95,5 +99,13 @@ public class BookModel {
 
     public void setReview(String review) {
         this.review = review;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
+    }
+
+    public byte[] getData() {
+        return data;
     }
 }
